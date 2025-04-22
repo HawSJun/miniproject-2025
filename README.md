@@ -36,7 +36,15 @@ IoT 미니프로젝트 2025
 
 ## 프로젝트 구성
 
-### 필요 이론
+### 관련 이론
+- **PWM(Pulse Width Modulation)** : 펄스 폭 변조
+    - Duty(듀티) : 신호가 `HIGH` 상태인 시간
+    - Duty Cylce : 한 주기동안 실제 작동되는 구간은 얼마나 되는가를 의미
+    - 다른 말로 `듀티비`
+    - 펄스 폭을 제어 = 듀티 사이클을 제어
+
+
+
 
 - 서보 θ (수평축) → 0° ~ 180° 회전
 
@@ -46,6 +54,15 @@ IoT 미니프로젝트 2025
     x​=d⋅sin(ϕ)⋅cos(θ)
     y=d⋅sin(ϕ)⋅sin(θ)
     z=d⋅cos(ϕ)
+    ```
+### GPIO
+- 기본 모드 설정
+
+    ```python
+    GPIO.setmode(GPIO.BOARD)    // GPIO 핀번호를 라즈베리파이 보드(BOARD) 번호로 설정
+    GPIO.setmode(GPIO.BCM)      // GPIO 핀번호를 BCM 모드 번호로 설정
+    GPIO.setup(pin, GPIO.IN)    // GPIO 핀을 입력 모드로 설정 
+    GPIO.setup(pin, GPIO.OUT)   // GPIO 핀을 출력 모드로 설정 
     ```
 
 ### GPIO 핀
