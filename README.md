@@ -37,12 +37,145 @@ IoT 미니프로젝트 2025
 ## 프로젝트 구성
 
 ### 관련 이론
-- **PWM(Pulse Width Modulation)** : 펄스 폭 변조
-    - Duty(듀티) : 신호가 `HIGH` 상태인 시간
-    - Duty Cylce : 한 주기동안 실제 작동되는 구간은 얼마나 되는가를 의미
-    - 다른 말로 `듀티비`
-    - 펄스 폭을 제어 = 듀티 사이클을 제어
 
+## 1. I2C 통신이란?
+
+**I2C (Inter-Integrated Circuit)**는 단 **2개의 라인(SDA, SCL)**으로 여러 디바이스를 연결할 수 있는 직렬 통신 방식
+
+- **저속이지만 안정적인 통신 방식**
+- **하나의 마스터와 여러 슬레이브** 구조
+- 센서, LCD, 드라이버 등 다양한 모듈 제어에 활용
+
+---
+
+## 2. SDA & SCL 설명
+
+| 라인 | 이름 | 역할 |
+|------|------|------|
+| SDA  | Serial Data Line | 데이터 송수신 담당 |
+| SCL  | Serial Clock Line | 마스터가 생성하는 클럭 신호 제공 |
+
+- 대부분의 Arduino 보드는 **A4(SDA), A5(SCL)** 핀을 사용
+- **데이터는 SDA로**, **타이밍은 SCL로** 동기화
+
+---
+
+## 3. I2C 클럭의 역할
+
+- **SCL(Serial Clock Line)**은 마스터가 생성하며, 모든 데이터 송수신의 기준 타이밍을 제공
+- 클럭이 없으면 언제 데이터를 읽고 쓸지 몰라 통신이 불가능 함.
+
+| 모드 | 속도 |
+|------|------|
+| 표준(Standard) | 100kHz |
+| 패스트(Fast)   | 400kHz |
+| 하이스피드     | 3.4MHz (일반적으로 사용하지 않음) |
+
+```text
+SCL: ──┐    ┌────┐    ┌────┐
+       └────┘    └────┘    (↑ 타이밍 동기화)
+```
+
+## 4. 마스터-슬레이브 구조
+
+I2C는 **마스터(Master)**와 **슬레이브(Slave)** 장치 간 통신을 기반으로 합니다.
+
+| 역할 | 기능 |
+|------|------|
+| 마스터 (Master) | 통신 시작 및 종료 제어<br>클럭 생성(SCL)<br>슬레이브 주소 지정 및 데이터 요청 |
+| 슬레이브 (Slave) | 마스터 요청 수신<br>해당 주소와 일치할 경우 응답<br>데이터 송/수신 수행 |
+
+- 한 시스템에 **마스터는 보통 1개**, **슬레이브는 최대 127개** 연결 가능 (7bit 주소 체계 기준)
+- 슬레이브 주소 충돌 방지를 위해 **고유한 주소 설정** 필요
+- 동일한 센서를 여러 개 사용할 경우, **MUX 회로 또는 주소 변경 기능 필요**
+
+---
+
+## 5. PCA9685 PWM 드라이버란?
+
+**PCA9685**는 I2C 통신을 통해 제어 가능한 **16채널 PWM 출력 보드**입니다. 서보 모터나 LED 밝기 제어 등에 주로 사용됩니다.
+
+### 주요 특징
+
+- 최대 16개 채널 개별 PWM 제어
+- **12-bit 분해능 (0 ~ 4095)**
+- PWM 주파수: 40 ~ 1000Hz
+- 서보 제어에 적합한 **50Hz PWM** 지원
+- 기본 I2C 주소: `0x40`
+
+### 핀 설명
+
+| 핀명 | 기능 |
+|------|------|
+| VCC  | 보드 동작 전원 (3.3V 또는 5V) |
+| GND  | 아두이노와 공통 접지 |
+| SDA  | I2C 데이터 라인 |
+| SCL  | I2C 클럭 라인 |
+| V+   | 서보모터에 공급할 외부 전원 입력 (5~6V) |
+
+> **V+는 반드시 외부 전원 사용**, GND는 **아두이노와 공통 접지**해야 서보 정상 동작 함!!
+
+---
+
+## 6. 듀티비(Duty Cycle)와 서보 제어 원리
+
+### PWM이란?
+
+- PWM(Pulse Width Modulation)은 **빠르게 ON/OFF를 반복하는 디지털 신호**로 아날로그 효과를 내는 방식
+- 서보모터의 각도는 **펄스 폭(ON 시간)**에 따라 결정
+
+### 듀티비란?
+
+> **듀티비(Duty Cycle)** = (ON 시간 / 전체 주기) × 100%
+
+- 서보모터에서 일반적으로 사용하는 **50Hz (20ms 주기)** 기준:
+
+| 각도 | 펄스 폭 | 듀티비 (%) |
+|------|---------|------------|
+| 0°   | 1.0ms   | 5%         |
+| 90°  | 1.5ms   | 7.5%       |
+| 180° | 2.0ms   | 10%        |
+
+### PCA9685에서 각도 제어 방법
+
+- 12-bit 분해능 → 1사이클 = 4096 스텝
+- `펄스 스텝 = (펄스 시간 / 주기) × 4096`
+- 예: 1.5ms / 20ms × 4096 = **307**
+
+#### 아두이노 매핑 예시
+
+```cpp
+#define SERVOMIN 150  // 서보 0도에 해당하는 최소 펄스 폭
+#define SERVOMAX 600  // 서보 180도에 해당하는 최대 펄스 폭
+
+int pulse = map(angle, 0, 180, SERVOMIN, SERVOMAX);
+pwm.setPWM(channel, 0, pulse);
+```
+
+- 아두이노 예제 코드 (PCA9685 사용)
+
+    ```cpp
+    #include <Wire.h>
+    #include <Adafruit_PWMServoDriver.h>
+
+    // PCA9685 객체 생성
+    Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
+
+    #define SERVOMIN 150  // 0도에 해당하는 펄스 폭
+    #define SERVOMAX 600  // 180도에 해당하는 펄스 폭
+
+    void setup() {
+        pwm.begin();            // PCA9685 초기화
+        pwm.setPWMFreq(50);     // 서보모터용 50Hz 주파수 설정
+    }
+
+    void loop() {
+        int angle = 90;  // 서보 각도
+        int pulse = map(angle, 0, 180, SERVOMIN, SERVOMAX);  // 각도를 펄스 폭으로 변환
+        pwm.setPWM(0, 0, pulse);  // 채널 0번 서보 제어
+        delay(1000);
+    }
+    ```
 
 
 
@@ -55,57 +188,3 @@ IoT 미니프로젝트 2025
     y=d⋅sin(ϕ)⋅sin(θ)
     z=d⋅cos(ϕ)
     ```
-### GPIO
-- 기본 모드 설정
-
-    ```python
-    GPIO.setmode(GPIO.BOARD)    // GPIO 핀번호를 라즈베리파이 보드(BOARD) 번호로 설정
-    GPIO.setmode(GPIO.BCM)      // GPIO 핀번호를 BCM 모드 번호로 설정
-    GPIO.setup(pin, GPIO.IN)    // GPIO 핀을 입력 모드로 설정 
-    GPIO.setup(pin, GPIO.OUT)   // GPIO 핀을 출력 모드로 설정 
-    ```
-
-### GPIO 핀
-
-| Pin 번호 | GPIO (BCM) 번호  | 기능          | 설명                                         |
-|----------|------------------|---------------|----------------------------------------------|
-| 1        | -                | 3.3V 전원     | 3.3V 전압 출력 (센서 등 전원 공급용)         |
-| 2        | -                | 5V 전원       | 5V 전압 출력 (서보모터 등 고전력 부품에 사용)|
-| 3        | GPIO2            | I2C SDA       | I2C 데이터 라인 (VL53L0X 등 센서 통신용)     |
-| 4        | -                | 5V 전원       | 5V 전압 출력 (2번째 핀)                      |
-| 5        | GPIO3            | I2C SCL       | I2C 클럭 라인 (I2C 통신 동기화 역할)         |
-| 6        | -                | GND           | 접지(Ground), 회로의 기준점 역할             |
-| 7        | GPIO4            | GPIO          | 일반 디지털 입출력 핀                        |
-| 8        | GPIO14           | UART TX       | 시리얼 통신 송신 (Serial Transmit)           |
-| 9        | -                | GND           | 접지                                         |
-| 10       | GPIO15           | UART RX       | 시리얼 통신 수신 (Serial Receive)            |
-| 11       | GPIO17           | GPIO          | 일반 디지털 입출력 핀                        |
-| 12       | GPIO18           | PWM 가능      | PWM 제어 가능 핀 (서보 모터 제어 등)         |
-| 13       | GPIO27           | GPIO          | 일반 디지털 입출력 핀                        |
-| 14       | -                | GND           | 접지                                         |
-| 15       | GPIO22           | GPIO          | 일반 디지털 입출력 핀                        |
-| 16       | GPIO23           | GPIO          | 일반 디지털 입출력 핀                        |
-| 17       | -                | 3.3V 전원     | 추가 3.3V 출력                               |
-| 18       | GPIO24           | GPIO          | 일반 디지털 입출력 핀                        |
-| 19       | GPIO10           | SPI MOSI      | SPI 데이터 송신 핀 (Master Out Slave In)     |
-| 20       | -                | GND           | 접지                                         |
-| 21       | GPIO9            | SPI MISO      | SPI 데이터 수신 핀 (Master In Slave Out)     |
-| 22       | GPIO25           | GPIO          | 일반 디지털 입출력 핀                        |
-| 23       | GPIO11           | SPI SCLK      | SPI 클럭 신호 핀                             |
-| 24       | GPIO8            | SPI CE0       | SPI 장치 선택 신호 (Chip Enable 0)           |
-| 25       | -                | GND           | 접지                                         |
-| 26       | GPIO7            | SPI CE1       | SPI 장치 선택 신호 (Chip Enable 1)           |
-| 27       | GPIO0            | ID EEPROM SDA | HAT용 ID EEPROM 통신 핀 (SDA)                |
-| 28       | GPIO1            | ID EEPROM SCL | HAT용 ID EEPROM 통신 핀 (SCL)                |
-| 29       | GPIO5            | GPIO          | 일반 디지털 입출력 핀                        |
-| 30       | -                | GND           | 접지                                         |
-| 31       | GPIO6            | GPIO          | 일반 디지털 입출력 핀                        |
-| 32       | GPIO12           | PWM 가능      | PWM 제어 가능 핀                             |
-| 33       | GPIO13           | PWM 가능      | PWM 제어 가능 핀                             |
-| 34       | -                | GND           | 접지                                         |
-| 35       | GPIO19           | PWM 가능      | PWM 제어 가능 핀                             |
-| 36       | GPIO16           | GPIO          | 일반 디지털 입출력 핀                        |
-| 37       | GPIO26           | GPIO          | 일반 디지털 입출력 핀                        |
-| 38       | GPIO20           | GPIO          | 일반 디지털 입출력 핀                        |
-| 39       | -                | GND           | 접지                                         |
-| 40       | GPIO21           | GPIO          | 일반 디지털 입출력 핀                        |
