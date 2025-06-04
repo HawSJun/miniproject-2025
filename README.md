@@ -55,7 +55,7 @@ IoT 미니프로젝트 2025
 | SDA  | Serial Data Line | 데이터 송수신 담당 |
 | SCL  | Serial Clock Line | 마스터가 생성하는 클럭 신호 제공 |
 
-- 대부분의 Arduino 보드는 **A4(SDA), A5(SCL)** 핀을 사용
+- Arduino 보드는 **A4(SDA), A5(SCL)** 핀을 사용
 - **데이터는 SDA로**, **타이밍은 SCL로** 동기화
 
 ---
@@ -78,7 +78,7 @@ SCL: ──┐    ┌────┐    ┌────┐
 
 ## 4. 마스터-슬레이브 구조
 
-I2C는 **마스터(Master)**와 **슬레이브(Slave)** 장치 간 통신을 기반으로 합니다.
+- I2C는 **마스터(Master)**와 **슬레이브(Slave)** 장치 간 통신을 기반 함
 
 | 역할 | 기능 |
 |------|------|
@@ -93,7 +93,7 @@ I2C는 **마스터(Master)**와 **슬레이브(Slave)** 장치 간 통신을 기
 
 ## 5. PCA9685 PWM 드라이버란?
 
-**PCA9685**는 I2C 통신을 통해 제어 가능한 **16채널 PWM 출력 보드**입니다. 서보 모터나 LED 밝기 제어 등에 주로 사용됩니다.
+**PCA9685**는 I2C 통신을 통해 제어 가능한 **16채널 PWM 출력 보드**입니다. 서보 모터나 LED 밝기 제어 등에 주로 사용
 
 ### 주요 특징
 
@@ -152,39 +152,60 @@ int pulse = map(angle, 0, 180, SERVOMIN, SERVOMAX);
 pwm.setPWM(channel, 0, pulse);
 ```
 
-- 아두이노 예제 코드 (PCA9685 사용)
+#### 아두이노 예제 코드 (PCA9685 사용)
 
-    ```cpp
-    #include <Wire.h>
-    #include <Adafruit_PWMServoDriver.h>
+```cpp
+#include <Wire.h>
+#include <Adafruit_PWMServoDriver.h>
 
-    // PCA9685 객체 생성
-    Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
+// PCA9685 객체 생성
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
-    #define SERVOMIN 150  // 0도에 해당하는 펄스 폭
-    #define SERVOMAX 600  // 180도에 해당하는 펄스 폭
+#define SERVOMIN 150  // 0도에 해당하는 펄스 폭
+#define SERVOMAX 600  // 180도에 해당하는 펄스 폭
 
-    void setup() {
-        pwm.begin();            // PCA9685 초기화
-        pwm.setPWMFreq(50);     // 서보모터용 50Hz 주파수 설정
-    }
+void setup() {
+    pwm.begin();            // PCA9685 초기화
+    pwm.setPWMFreq(50);     // 서보모터용 50Hz 주파수 설정
+}
 
-    void loop() {
-        int angle = 90;  // 서보 각도
-        int pulse = map(angle, 0, 180, SERVOMIN, SERVOMAX);  // 각도를 펄스 폭으로 변환
-        pwm.setPWM(0, 0, pulse);  // 채널 0번 서보 제어
-        delay(1000);
-    }
-    ```
+void loop() {
+    int angle = 90;  // 서보 각도
+    int pulse = map(angle, 0, 180, SERVOMIN, SERVOMAX);  // 각도를 펄스 폭으로 변환
+    pwm.setPWM(0, 0, pulse);  // 채널 0번 서보 제어
+    delay(1000);
+}
+```
 
+## 8. 구면 좌표계 → 직교 좌표계 변환
 
+### 각도 범위
 
-- 서보 θ (수평축) → 0° ~ 180° 회전
+- **θ (Theta)** : 수평축 회전 → `0° ~ 180°`
+- **φ (Phi)** : 수직축 회전 → `0° ~ 90°`
+- **d** : 거리 센서로부터 측정된 거리 (단위: mm 또는 cm)
 
-- 서보 φ (수직축) → 0° ~ 90° 회전
+### 변환 공식
 
-    ```
-    x​=d⋅sin(ϕ)⋅cos(θ)
-    y=d⋅sin(ϕ)⋅sin(θ)
-    z=d⋅cos(ϕ)
-    ```
+> θ, φ는 **라디안 단위로 변환한 후** 삼각함수에 적용
+
+**x** = *d* · sin(φ) · cos(θ)  
+**y** = *d* · sin(φ) · sin(θ)  
+**z** = *d* · cos(φ)
+
+---
+
+### Python 예제 코드
+
+```python
+import math
+
+def spherical_to_cartesian(d, theta_deg, phi_deg):
+    theta = math.radians(theta_deg)  # 수평각 → 라디안
+    phi = math.radians(phi_deg)      # 수직각 → 라디안
+
+    x = d * math.sin(phi) * math.cos(theta)
+    y = d * math.sin(phi) * math.sin(theta)
+    z = d * math.cos(phi)
+
+    return (x, y, z)
