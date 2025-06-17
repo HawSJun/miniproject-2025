@@ -63,7 +63,29 @@
 - 음식포장 검사, 볼트 조립 검사, 납땜 공정, 액체 충전 검사...
 
 ##### 공정관리 ERD
-1. MySQL
+1. MySQL Workbench
+    - miniproject 데이터베이스 생성
+    - 테이블
+        - settings - 공통 코드 테이블
+        - schedules - 공정 계획 테이블
+        - processes - 처리할 실시간 공정 과정 저장 테이블
+
+    <img src="../image/mp0003.png" width="600">
+
+##### IoT 디바이스 시뮬레이터
+- 라즈베리파이, 아두이노 등 사용 디바이스 구성 및 구현
+- C# 시뮬레이션으로 동작을 만드는 윈앱 구현
+
+1. Visual Studio 프로젝트 생성
+
+##### MQTT Subscriber
+- WPF 과목에서 사용했던 MQTT Subscriber 그대로 사용
+- WpfMqttSubApp
+- SmartHome 작업했던 부분 수정 DB 저장부분 변경
+- DB 저장 부분 추가
+
+##### WPF 공정관리 앱 개발
+
 
 #### 파이썬 AI + ASP.NET 연동
 
