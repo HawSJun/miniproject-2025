@@ -16,6 +16,9 @@ public partial class App : Application
             DataContext = viewModel,
         };
 
+        viewModel.StartHmiRequested += view.StartHmiAni;    // ViewModel 이벤트와 View 애니메이션 메서드 연결
+        viewModel.StartSensorCheckRequested += view.StartSensorCheck;
+
         view.ShowDialog();
     }
 }
