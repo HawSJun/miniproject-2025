@@ -164,6 +164,7 @@ namespace WpfIoTSimulatorApp.ViewModels
                 Timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                 Result = resultText,
             };
+            // 일반 객체 데이터를 json으로 변경 -> 직렬화(Serialization)
             var jsonPayload = JsonConvert.SerializeObject(payload, Formatting.Indented);
             var message = new MqttApplicationMessageBuilder()
                                 .WithTopic(mqttTopic)

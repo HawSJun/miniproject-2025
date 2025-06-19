@@ -85,11 +85,14 @@
 3. View, ViewModel 구성
 4. WPF 애니메이션 기능으로 컨베이어벨트 구현
 
+    - 동영상 추가
+
+5. 선별결과 MQTT로 전달 기능 추가
+
 ##### MQTT Subscriber
 - WPF 과목에서 사용했던 MQTT Subscriber 그대로 사용
-- WpfMqttSubApp
+- WpfMqttSubApp 프로젝트 가져오기
 - SmartHome 작업했던 부분 수정 DB 저장부분 변경
-- DB 저장 부분 추가
 
 ##### WPF 공정관리 앱 개발
 
