@@ -11,5 +11,10 @@ namespace WpfMrpSimulatorApp.Views
         {
             InitializeComponent();
         }
+
+        private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true; // x버튼을 눌러도, Alt + F4눌러도 안꺼짐
+        }
     }
 }
