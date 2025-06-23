@@ -25,10 +25,17 @@ namespace WpfMrpSimulatorApp.ViewModels
 
         private ObservableCollection<Setting> _settings;
         private Setting _selectedSetting;
+        private bool _isUpdate;
 
         #endregion
 
         #region View와 연동할 속성
+
+        public bool IsUpdate
+        {
+            get { return _isUpdate; }
+            set { SetProperty(ref _isUpdate, value); }
+        }
 
         // View와 연동될 데이터/컬렉션
         public ObservableCollection<Setting> Settings
@@ -85,7 +92,7 @@ namespace WpfMrpSimulatorApp.ViewModels
             LoadGridFromDb();   // DB에서 데이터 로드해서 그리드에 출력
         }
 
-        private void LoadGridFromDb()
+        private async Task LoadGridFromDb()
         {
             try
             {
@@ -129,7 +136,7 @@ namespace WpfMrpSimulatorApp.ViewModels
             }
             catch (Exception ex)
             {
-
+                await this.dialogCoordinator.ShowMessageAsync(this, "오류", ex.Message);
             }
         }
 
@@ -142,15 +149,79 @@ namespace WpfMrpSimulatorApp.ViewModels
         }
 
         [RelayCommand]
-        public void SaveData()
+        public async Task SaveData()
         {
-            MessageBox.Show("저장");
+            // INSERT, UPDATE 기능을 모두 수행
+            try
+            {
+                string query = string.Empty;
+
+                using (MySqlConnection conn = new MySqlConnection(Common.CONNSTR))
+                {
+                    conn.Open();
+
+                    if (IsUpdate) query = "";  // UPDATE 쿼리
+                    else query = "";  // INSERT 쿼리
+
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@basicCode", SelectedSetting.BasicCode);
+                    cmd.Parameters.AddWithValue("@codeName", SelectedSetting.CodeName);
+                    cmd.Parameters.AddWithValue("@codeDesc", SelectedSetting.CodeDesc);
+
+                    var resultCnt = cmd.ExecuteNonQuery();
+                    if (resultCnt > 0)
+                    {
+                        await this.dialogCoordinator.ShowMessageAsync(this, "기본설정 저장", "데이터가 저장되었습니다.");
+                    }
+                    else
+                    {
+                        await this.dialogCoordinator.ShowMessageAsync(this, "기본설정 저장", "데이터가 저장에 실패했습니다.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await this.dialogCoordinator.ShowMessageAsync(this, "오류", ex.Message);
+            }
+
+            LoadGridFromDb();  // 재조회
         }
 
         [RelayCommand]
         public async Task RemoveData()
         {
             var result = await this.dialogCoordinator.ShowMessageAsync(this, "삭제", "삭제하시겠습니까?", MessageDialogStyle.AffirmativeAndNegative);
+            if (result == MessageDialogResult.Negative) return; // Cancle을 누르면 메서드를 탈출
+
+            try
+            {
+                string query = "DELETE FROM settings WHERE basicCode = @basicCode";
+
+                using (MySqlConnection conn = new MySqlConnection(Common.CONNSTR))
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand(query, conn);
+
+                    cmd.Parameters.AddWithValue("@basicCode", SelectedSetting.BasicCode);
+
+                    int resultCnt = cmd.ExecuteNonQuery();  // 삭제된 쿼리 행 수 리턴 1, 안지워졌으면 0
+
+                    if (resultCnt == 1)
+                    {
+                        await this.dialogCoordinator.ShowMessageAsync(this, "기본설정 삭제", "데이터가 삭제되었습니다.");
+                    }
+                    else
+                    {
+                        await this.dialogCoordinator.ShowMessageAsync(this, "기본설정 삭제", "데이터 삭제 문제발생!!");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await this.dialogCoordinator.ShowMessageAsync(this, "오류", ex.Message);
+            }
+
+            LoadGridFromDb();  // DB를 다시 불러서 그리드를 재조회한다.
         }
 
         #endregion

@@ -7,7 +7,9 @@
     xmlns:local="clr-namespace:WpfMrpSimulatorApp.Views"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     mc:Ignorable="d" 
+    Dialog:DialogParticipation.Register="{Binding}"
     d:DesignHeight="335" d:DesignWidth="790">
     <Grid Margin="5">
         <Grid.RowDefinitions>
@@ -57,6 +59,7 @@
                 <TextBox Grid.Row="0" Margin="2" CharacterCasing="Upper"
                          mah:TextBoxHelper.AutoWatermark="True"
                          mah:TextBoxHelper.Watermark="기본코드(8자)"
+                         MaxLength="8"
                          Text="{Binding SelectedSetting.BasicCode}" IsReadOnly="{Binding}"/>
 
                 <TextBox Grid.Row="1" Margin="2"
