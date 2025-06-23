@@ -85,7 +85,7 @@
 3. View, ViewModel 구성
 4. WPF 애니메이션 기능으로 컨베이어벨트 구현
 
-    - 동영상 추가
+    https://github.com/user-attachments/assets/3cb6f380-2d55-4380-b775-1ea80f1edb87
 
 5. 선별결과 MQTT로 전달 기능 추가
 
