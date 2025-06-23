@@ -116,6 +116,7 @@
 5. SettingView 화면 UI 구현
 6. SettingViewModel과 연동 작업
 7. Model DB 테이블 클래스 가져오기
+8. Setting 관련, DB연동 조회/입력/수정/삭제 기능 구현
 
 #### 파이썬 AI + ASP.NET 연동
 - 참조 소스

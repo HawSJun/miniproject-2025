@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using MahApps.Metro.Controls.Dialogs;
 using System.Windows;
 using System.Windows.Controls;
+using WpfMrpSimulatorApp.Helpers;
 using WpfMrpSimulatorApp.Views;
 
 namespace WpfMrpSimulatorApp.ViewModels
@@ -51,7 +52,7 @@ namespace WpfMrpSimulatorApp.ViewModels
         [RelayCommand]
         public void AppSetting()
         {
-            var viewModel = new SettingViewModel();
+            var viewModel = new SettingViewModel(Common.DIALOGCOORDINATOR);
             var view = new SettingView
             {
                 DataContext = viewModel,
