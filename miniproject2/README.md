@@ -118,6 +118,11 @@
 7. Model DB 테이블 클래스 가져오기
 8. Setting 관련, DB연동 조회/입력/수정/삭제 기능 구현
 
+9. ScheduleView, ScheduleViewModel 초기 구현
+    - SettingView.xaml 복사 후 이름 변경, 클래스명 변경
+    - SettingViewModel.cs 복사 후 이름 변경, 클래스명 변경
+10. ScheduleView 데이터그리드, 입력양식 수정
+
 #### 파이썬 AI + ASP.NET 연동
 - 참조 소스
 - https://github.com/hugoMGSung/iot-webapp-2025/tree/main/ref/ReferencedSolution/ConvertWebApp
