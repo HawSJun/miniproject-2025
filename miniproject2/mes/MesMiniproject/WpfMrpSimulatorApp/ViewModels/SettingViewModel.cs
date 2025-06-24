@@ -63,8 +63,7 @@ namespace WpfMrpSimulatorApp.ViewModels
         public Setting SelectedSetting
         {
             get => _selectedSetting;
-            set
-            {
+            set { 
                 SetProperty(ref _selectedSetting, value);
                 // 최초에 BasicCode에 값이 있는 상태만 수정상태
                 if (_selectedSetting != null)  // 삭제 후에는 _selectedSetting자체가 null이 됨
@@ -81,8 +80,7 @@ namespace WpfMrpSimulatorApp.ViewModels
         /// <summary>
         /// 기본코드
         /// </summary>
-        public string BasicCode
-        {
+        public string BasicCode {
             get => _basicCode;
             set => SetProperty(ref _basicCode, value);
         }
@@ -90,29 +88,25 @@ namespace WpfMrpSimulatorApp.ViewModels
         /// <summary>
         /// 코드명
         /// </summary>
-        public string CodeName
-        {
-            get => _codeName;
+        public string CodeName {
+            get => _codeName; 
             set => SetProperty(ref _codeName, value);
         }
 
         /// <summary>
         /// 코드설명
         /// </summary>
-        public string? CodeDesc
-        {
+        public string? CodeDesc {
             get => _codeDesc;
             set => SetProperty(ref _codeDesc, value);
         }
 
-        public DateTime? RegDt
-        {
+        public DateTime? RegDt {
             get => _regDt;
             set => SetProperty(ref _regDt, value);
         }
 
-        public DateTime? ModDt
-        {
+        public DateTime? ModDt {
             get => _modDt;
             set => SetProperty(ref _modDt, value);
         }
@@ -126,7 +120,7 @@ namespace WpfMrpSimulatorApp.ViewModels
             IsUpdate = true;
 
             // 최초에는 저장버튼, 삭제버튼이 비활성화 
-            CanSave = CanRemove = false;
+            CanSave = CanRemove = false;            
         }
 
         private async Task LoadGridFromDb()
@@ -183,7 +177,7 @@ namespace WpfMrpSimulatorApp.ViewModels
             IsUpdate = false;
 
             CanSave = true;
-            CanRemove = false;  // 이게 없으면 수정후 신규를 눌러도 활성화 되어 있음. 250623 12:31 hugo 수정
+            CanRemove = false;  // 이게 없으면 수정후 신규를 눌러도 활성화 되어 있음.
         }
 
         #region View 버튼클릭 메서드
@@ -194,7 +188,7 @@ namespace WpfMrpSimulatorApp.ViewModels
             InitVariable();
             IsUpdate = false;  // DoubleCheck. 확실하게 동작을 하면 지워도 되는 로직
             CanSave = true; // 저장버튼 활성화
-        }
+        }        
 
         [RelayCommand]
         public async Task SaveData()

@@ -18,7 +18,7 @@ namespace WpfMrpSimulatorApp.ViewModels
 
         public MainViewModel(IDialogCoordinator coordinator)
         {
-            this.dialogCoordinator = coordinator;   // 다이얼로그 코디네이터 초기화
+            this.dialogCoordinator = coordinator; // 다이얼로그 코디네이터 초기화
 
             Greeting = "MRP 공정관리!";
         }
@@ -38,9 +38,9 @@ namespace WpfMrpSimulatorApp.ViewModels
         [RelayCommand]
         public async Task AppExit()
         {
-            // var result = MessageBox.Show("종료하시겠습니까?", "종료확인", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            //var result = MessageBox.Show("종료하시겠습니까?", "종료확인", MessageBoxButton.YesNo, MessageBoxImage.Question);
             var result = await this.dialogCoordinator.ShowMessageAsync(this, "종료확인", "종료하시겠습니까?", MessageDialogStyle.AffirmativeAndNegative);
-            if (result == MessageDialogResult.Affirmative)
+            if (result == MessageDialogResult.Affirmative) 
             {
                 Application.Current.Shutdown();
             } else
