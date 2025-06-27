@@ -1,6 +1,6 @@
 ﻿namespace WpfMrpSimulator.Models
 {
-    // JSON 전송용 객체
+    // JSON 전송용 객체. MQTT에만 사용
     public class CheckResult
     {
         public string ClientId { get; set; }
