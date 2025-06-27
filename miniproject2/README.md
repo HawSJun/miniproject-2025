@@ -146,7 +146,7 @@
     - Start 버튼 눌러서 IoT Simulator 동작 시키고 동기화
     - 체크 이후 성공/실패 결과 DB에 저장, 실시간 시각화
 
-
+https://github.com/user-attachments/assets/b0f59ab3-da77-4f57-8f54-7cd5f4ce020d
 
 ##### 추후 작업(MiniProject3)
 1. ReportView, ReportViewModel LiveChart 작업
