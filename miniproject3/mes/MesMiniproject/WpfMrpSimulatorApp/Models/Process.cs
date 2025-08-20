@@ -38,7 +38,7 @@ public partial class Process
     public TimeOnly? PrcEndTime { get; set; }
 
     /// <summary>
-    /// 실제 공정장비ID
+    /// 실제 공정장비아이디
     /// </summary>
     public string? PrcFacilityId { get; set; }
 

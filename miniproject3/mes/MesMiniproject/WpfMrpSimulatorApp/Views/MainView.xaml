@@ -7,7 +7,7 @@
     xmlns:local="clr-namespace:WpfMrpSimulatorApp.Views"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"    
     mc:Ignorable="d"
     Title="MRP 공정관리" Height="450" Width="800" ResizeMode="NoResize"
     MinWidth="470" MinHeight="290"
@@ -15,31 +15,31 @@
     <mah:MetroWindow.IconTemplate>
         <DataTemplate>
             <iconPacks:PackIconVaadinIcons Kind="Storage" Foreground="White" 
-                                       Margin="5,7,0,0" Width="24"/>
+                                           Margin="5,7,0,0" Width="24" />
         </DataTemplate>
     </mah:MetroWindow.IconTemplate>
     <Grid Margin="0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="30" />
         </Grid.RowDefinitions>
         
         <!-- UI 구성 중 메뉴 -->
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            
-            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Stretch">
+
+            <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Stretch">
                 <Button Content="기본설정" FontSize="12" Background="OrangeRed" Margin="5"
                         Command="{Binding AppSettingCommand}">
                     <Button.ContentTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="{Binding}" Foreground="White" VerticalAlignment="Center"/>
-                                <iconPacks:PackIconVaadinIcons Kind="Cogs" Foreground="AntiqueWhite"/>
+                                <Label Content="{Binding}" Foreground="White" VerticalAlignment="Center" />
+                                <iconPacks:PackIconVaadinIcons Kind="Cogs" Foreground="AntiqueWhite" />
                             </StackPanel>
                         </DataTemplate>
                     </Button.ContentTemplate>
@@ -50,8 +50,8 @@
                     <Button.ContentTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="{Binding}" Foreground="White" VerticalAlignment="Center"/>
-                                <iconPacks:PackIconModern Kind="Calendar" Foreground="AntiqueWhite"/>
+                                <Label Content="{Binding}" Foreground="White" VerticalAlignment="Center" />
+                                <iconPacks:PackIconModern Kind="Calendar" Foreground="AntiqueWhite" />
                             </StackPanel>
                         </DataTemplate>
                     </Button.ContentTemplate>
@@ -62,8 +62,8 @@
                     <Button.ContentTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="{Binding}" Foreground="White" VerticalAlignment="Center"/>
-                                <iconPacks:PackIconUnicons Kind="EyeLine" Foreground="AntiqueWhite"/>
+                                <Label Content="{Binding}" Foreground="White" VerticalAlignment="Center" />
+                                <iconPacks:PackIconUnicons Kind="EyeLine" Foreground="AntiqueWhite" />
                             </StackPanel>
                         </DataTemplate>
                     </Button.ContentTemplate>
@@ -73,13 +73,13 @@
                     <Button.ContentTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <Label Content="{Binding}" Foreground="White" VerticalAlignment="Center"/>
-                                <iconPacks:PackIconUnicons Kind="FileGraphLine" Foreground="AntiqueWhite"/>
+                                <Label Content="{Binding}" Foreground="White" VerticalAlignment="Center" />
+                                <iconPacks:PackIconUnicons Kind="FileGraphLine" Foreground="AntiqueWhite" />
                             </StackPanel>
                         </DataTemplate>
                     </Button.ContentTemplate>
                 </Button>
-            
+
             </StackPanel>
 
             <Button Grid.Column="1" Content="앱 종료" FontSize="12" Background="SlateGray" Margin="5"
@@ -87,8 +87,8 @@
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <Label Content="{Binding}" Foreground="White" VerticalAlignment="Center"/>
-                            <iconPacks:PackIconEvaIcons Kind="PowerOutline" Foreground="AntiqueWhite"/>
+                            <Label Content="{Binding}" Foreground="White" VerticalAlignment="Center" />
+                            <iconPacks:PackIconEvaIcons Kind="PowerOutline" Foreground="AntiqueWhite" />
                         </StackPanel>
                     </DataTemplate>
                 </Button.ContentTemplate>
@@ -96,16 +96,16 @@
         </Grid>
         
         <!-- UI 구성 중 메인컨텐츠 영역 -->
-        <ContentControl Grid.Row="1" Content="{Binding CurrentView}"/>
+        <ContentControl Grid.Row="1" Content="{Binding CurrentView}" />
         
         <!-- UI 구성 중 상태바 -->
         <StatusBar Grid.Row="2">
             <StatusBarItem>
-                <TextBlock Text=""/>
+                <TextBlock Text="" />                
             </StatusBarItem>
-            <Separator Background="White"/>
+            <Separator Background="White" />
             <StatusBarItem HorizontalAlignment="Right">
-                <TextBlock Text="{Binding CurrentTime}"/>
+                <TextBlock Text="{Binding CurrentTime}" />
             </StatusBarItem>
         </StatusBar>
     </Grid>

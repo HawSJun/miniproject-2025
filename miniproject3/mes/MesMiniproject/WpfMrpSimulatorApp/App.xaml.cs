@@ -6,24 +6,24 @@ using WpfMrpSimulatorApp.Helpers;
 using WpfMrpSimulatorApp.ViewModels;
 using WpfMrpSimulatorApp.Views;
 
-namespace WpfMrpSimulatorApp;
-
-/// <summary>
-/// Interaction logic for App.xaml
-/// </summary>
-public partial class App : Application
+namespace WpfMrpSimulatorApp
 {
-    private void Application_Startup(object sender, StartupEventArgs e)
+    /// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
+    public partial class App : Application
     {
-        Common.DIALOGCOORDINATOR = DialogCoordinator.Instance;
-
-        var viewModel = new MainViewModel(Common.DIALOGCOORDINATOR);
-        var view = new MainView
+        private void Application_Startup(object sender, StartupEventArgs e)
         {
-            DataContext = viewModel,
-        };
+            Common.DIALOGCOORDINATOR = DialogCoordinator.Instance;
 
-        view.ShowDialog();
+            var viewModel = new MainViewModel(Common.DIALOGCOORDINATOR);
+            var view = new MainView
+            {
+                DataContext = viewModel,
+            };
+
+            view.ShowDialog();
+        }
     }
 }
-

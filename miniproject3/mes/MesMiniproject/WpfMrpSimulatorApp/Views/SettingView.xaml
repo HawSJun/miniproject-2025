@@ -93,7 +93,6 @@
                             </DataTemplate>
                         </Button.ContentTemplate>
                     </Button>
-                    
                     <Button Content="저장" Margin="0,0,3,0" Command="{Binding SaveDataCommand}" IsEnabled="{Binding CanSave}">
                         <Button.ContentTemplate>
                             <DataTemplate>
@@ -104,7 +103,6 @@
                             </DataTemplate>
                         </Button.ContentTemplate>
                     </Button>
-                    
                     <Button Content="삭제" Command="{Binding RemoveDataCommand}" IsEnabled="{Binding CanRemove}">
                         <Button.ContentTemplate>
                             <DataTemplate>

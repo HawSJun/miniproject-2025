@@ -39,24 +39,26 @@
                   SelectedItem="{Binding SelectedSchedule, Mode=TwoWay}"
                   Style="{StaticResource MahApps.Styles.DataGrid.Azure}">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding SchIdx}" Header="계획순번"/>
+                <DataGridTextColumn Binding="{Binding SchIdx}" Header="계획순번" />
                 <DataGridTextColumn Binding="{Binding PlantCode}" Header="플랜트코드" Visibility="Hidden"/>
                 <DataGridTextColumn Binding="{Binding PlantName}" Header="플랜트명"/>
-                <DataGridTextColumn Binding="{Binding SchDate, StringFormat='yyyy-MM-dd'}" Header="계획일자" Width="73"/>
+                <DataGridTextColumn Binding="{Binding SchDate, StringFormat='yyyy-MM-dd'}" Header="계획일자" Width="73" />
                 <DataGridTextColumn Binding="{Binding LoadTime}" Header="로드시간(초)">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
-                            <Setter Property="TextAlignment" Value="Right"/>
+                            <Setter Property="TextAlignment" Value="Right" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding SchStartTime, StringFormat='HH:mm'}" Header="시작시간"/>
-                <DataGridTextColumn Binding="{Binding SchEndTime, StringFormat='HH:mm'}" Header="종료시간"/>
+                <DataGridTextColumn Binding="{Binding SchStartTime, StringFormat='HH:mm'}" Header="시작시간" />
+                <DataGridTextColumn Binding="{Binding SchEndTime, StringFormat='HH:mm'}" Header="종료시간" />
                 <DataGridTextColumn Binding="{Binding SchFacilityId}" Header="설비코드" Visibility="Hidden"/>
                 <DataGridTextColumn Binding="{Binding SchFacilityName}" Header="설비명"/>
                 <DataGridTextColumn Binding="{Binding SchAmount}" Header="계획수량"/>
-                <DataGridTextColumn Binding="{Binding RegDt, StringFormat='yyyy-MM-dd'}" Header="등록일" Width="73"/>
-                <DataGridTextColumn Binding="{Binding ModDt, StringFormat='yyyy-MM-dd'}" Header="수정일" Width="73"/>
+
+
+                <DataGridTextColumn Binding="{Binding RegDt, StringFormat='yyyy-MM-dd'}" Header="등록일" Width="73" />
+                <DataGridTextColumn Binding="{Binding ModDt, StringFormat='yyyy-MM-dd'}" Header="수정일" Width="73" />
             </DataGrid.Columns>
         </DataGrid>
         
@@ -72,11 +74,10 @@
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
-                </Grid.RowDefinitions>
-                
-                <TextBox Grid.Row="0" Margin="2"
+                </Grid.RowDefinitions>                
+                <TextBox Grid.Row="0" Margin="2" 
                          mah:TextBoxHelper.AutoWatermark="True" 
-                         mah:TextBoxHelper.Watermark="계획순번"
+                         mah:TextBoxHelper.Watermark="계획순번"                         
                          Text="{Binding SelectedSchedule.SchIdx}" IsReadOnly="True"/>
 
                 <ComboBox Grid.Row="1" Margin="2"
@@ -91,33 +92,33 @@
                                 mah:TextBoxHelper.AutoWatermark="True" 
                                 mah:TextBoxHelper.Watermark="계획일자"
                                 SelectedDateFormat="Short"                                
-                                SelectedDate="{Binding SelectedSchedule.SchDate, Mode=TwoWay,
-                                                Converter={StaticResource DateOnlyToDateTimeConverter}}"/>
-                    
-                    <mah:NumericUpDown Margin="2" Width="145.5"
-                                       mah:TextBoxHelper.AutoWatermark="True" 
-                                       mah:TextBoxHelper.Watermark="로드시간(초)"
-                                       mah:TextBoxHelper.WatermarkAlignment="Left"
-                                       Minimum="0" Maximum="100"
-                                       Value="{Binding SelectedSchedule.LoadTime}"/>
+                                SelectedDate="{Binding SelectedSchedule.SchDate, Mode=TwoWay, 
+                                                Converter={StaticResource DateOnlyToDateTimeConverter}}" />
+
+                    <mah:NumericUpDown Margin="2" Width="145"
+                                        mah:TextBoxHelper.AutoWatermark="True" 
+                                        mah:TextBoxHelper.Watermark="로드시간(초)"
+                                        mah:TextBoxHelper.WatermarkAlignment="Left"
+                                        Minimum="0" Maximum="100"
+                                        Value="{Binding SelectedSchedule.LoadTime}" />
                 </StackPanel>
-                
+
                 <StackPanel Grid.Row="3" Margin="0" Orientation="Horizontal">
-                    <ComboBox Margin="2" Width="145.5"
+                    <ComboBox Margin="2" Width="145" 
                               mah:TextBoxHelper.AutoWatermark="True" 
                               mah:TextBoxHelper.Watermark="시작시간"
                               ItemsSource="{Binding TimeOptions}"
                               DisplayMemberPath="Display" SelectedValuePath="Time"
-                              SelectedValue="{Binding SelectedSchedule.SchStartTime}"/>
-                    <ComboBox Margin="2" Width="145.5"
+                              SelectedValue="{Binding SelectedSchedule.SchStartTime}" />
+                    <ComboBox Margin="2" Width="145"
                               mah:TextBoxHelper.AutoWatermark="True" 
-                              mah:TextBoxHelper.Watermark="종료시간"
+                              mah:TextBoxHelper.Watermark="종료시간" 
                               ItemsSource="{Binding TimeOptions}"
                               DisplayMemberPath="Display" SelectedValuePath="Time"
-                              SelectedValue="{Binding SelectedSchedule.SchEndTime}"/>
+                              SelectedValue="{Binding SelectedSchedule.SchEndTime}" />
                 </StackPanel>
 
-                <ComboBox Grid.Row="4" Margin="2"
+                <ComboBox Grid.Row="4" Margin="2" 
                           mah:TextBoxHelper.AutoWatermark="True"
                           mah:TextBoxHelper.Watermark="설비코드"
                           ItemsSource="{Binding FacilityIds}"
@@ -125,24 +126,26 @@
                           SelectedValue="{Binding SelectedSchedule.SchFacilityId}"/>
 
                 <mah:NumericUpDown Grid.Row="5" Margin="2"
-                                   mah:TextBoxHelper.AutoWatermark="True" 
-                                   mah:TextBoxHelper.Watermark="계획수량"
-                                   mah:TextBoxHelper.WatermarkAlignment="Left"
-                                   Minimum="0" Maximum="10000"
-                                   Value="{Binding SelectedSchedule.SchAmount}"/>
+                                    mah:TextBoxHelper.AutoWatermark="True" 
+                                    mah:TextBoxHelper.Watermark="계획수량"
+                                    mah:TextBoxHelper.WatermarkAlignment="Left"
+                                    Minimum="0" Maximum="10000"
+                                    Value="{Binding SelectedSchedule.SchAmount}" />
+
 
                 <StackPanel Grid.Row="6" Margin="0" Orientation="Horizontal">
-                    <DatePicker Margin="2" Width="145.5" IsEnabled="False"
+                    <DatePicker Margin="2" Width="145" IsEnabled="False"
                                 mah:TextBoxHelper.AutoWatermark="True" 
                                 mah:TextBoxHelper.Watermark="등록일"
                                 Text="{Binding SelectedSchedule.RegDt}"/>
                     
-                    <DatePicker Margin="2" Width="145.5" IsEnabled="False"
+                    <DatePicker Margin="2" Width="145" IsEnabled="False"
                                 mah:TextBoxHelper.AutoWatermark="True" 
                                 mah:TextBoxHelper.Watermark="수정일"
                                 Text="{Binding SelectedSchedule.ModDt}"/>
                 </StackPanel>
                 
+
                 
 
                 <StackPanel Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Right">
@@ -156,7 +159,6 @@
                             </DataTemplate>
                         </Button.ContentTemplate>
                     </Button>
-                    
                     <Button Content="저장" Margin="0,0,3,0" Command="{Binding SaveDataCommand}" IsEnabled="{Binding CanSave}">
                         <Button.ContentTemplate>
                             <DataTemplate>
@@ -167,7 +169,6 @@
                             </DataTemplate>
                         </Button.ContentTemplate>
                     </Button>
-                    
                     <Button Content="삭제" Command="{Binding RemoveDataCommand}" IsEnabled="{Binding CanRemove}">
                         <Button.ContentTemplate>
                             <DataTemplate>

@@ -21,7 +21,7 @@ public partial class Schedule
     public DateOnly SchDate { get; set; }
 
     /// <summary>
-    /// 로드타임(몇초)
+    /// 로드타임(초)
     /// </summary>
     public int LoadTime { get; set; }
 
