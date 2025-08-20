@@ -126,6 +126,9 @@ https://github.com/user-attachments/assets/b25e44e1-2a77-4699-82e7-d4c422b9ecde
 
 
 ### 추가 진행
+- 컨베이어벨트 동작 시 Timestamp 문제
+    - `1970-01-04 09:00:00` 로 표현되는 현상
+
 - 컬러센서 센싱 후 부저 동작
     -  [x] 성공과 실패에 따라 다른 소리 발생
 
