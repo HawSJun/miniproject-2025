@@ -91,3 +91,7 @@
 #### ASP.NET Core 웹페이지
 
 - 이미지를 AI Server로 전달하고 결과를 돌려받는 웹사이트
+- index.html 작업
+- API controller 작업
+
+[소스](./backend/ASPWebSolution/)
